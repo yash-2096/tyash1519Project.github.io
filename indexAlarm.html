@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="Yash Tiwari" content="Responsive Alarm Clock, Html5.0, CSS, Javascript, Web technology">
+    <title>Responsive Alarm Clock</title>
+    <link rel="stylesheet" href="indexAlarm.css">
+</head>
+
+<body>
+
+<!-- 1. Navigation Module -->
+
+<nav class="navbar">
+        <div class="left">
+            <h1>Alarm Clock</h1>
+        </div>
+        <div class="right">
+            <input type="checkbox" id="check">
+            <label for="check" class="checkBtn">
+                <i class="fa fa-bars"></i>
+            </label>
+            <ul class="list">
+                <li><a href="#">Home</a></li>
+                <li><a href="About-Project.html" target="_blank">About-Project</a></li>
+                <li><a href="#">Github-Link</a></li>
+            </ul>
+        </div>
+</nav>
+
+<!-- 2. Alarm Clock Module  -->
+
+<div class="alarmClockContainer">       
+    
+    <section class="container">
+     <!-- Digital Clock in 24hrs format -->
+        <div class="time-display">
+            <div id="clock"></div>
+        </div>
+     <!-- Digital Updated Date and Day -->
+        <div class="daydate-display">
+          <div class="dayp1" id="p1"></div>
+        </div>
+        <!-- Alarm Clock Input Form Starts -->
+        <form class="setAlarm">
+        <label class="alarm-heading"><h3 class="Add-Alarm-heading">Add New Alarm</h3><label><br>
+        
+        <div class="set-alarm-field">
+            <input type="number" name="a_hour" id="a_hour" placeholder="HH" max="23" min="00">
+            <input type="number" name="a_min" id="a_min" placeholder="MM" max="59" min="00">
+            <input type="number" name="a_sec" id="a_sec" placeholder="SS" max="59" min="00">
+        </div>
+            <div class="controls">
+                <button type="submit" class="set-alarm">Add Alarm</button>
+                <button type="reset" onclick="clearAlarm()" class="clear-alarm">Snooze</button>
+            </div>
+        </form>
+    <!-- Alarm List  -->
+    </section>
+
+    <section>
+        <div>
+            <h3 class="alarm-heading" style="margin-top: -20px;"> Alarms List</h3>
+        </div>
+        <div>
+            <ul id = "myList"> 
+            </ul>
+        </div>
+    </section>
+
+</div>    
+
+<!-- Javascript Code  -->
+
+<script >
+
+const display = document.getElementById('clock');
+
+const dateDiv = document.getElementById("p1");
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    const today = new Date();
+    const day = days[today.getDay()];
+    const month = months[today.getMonth()];
+    const date = today.getDate();
+    const year = today.getFullYear();
+
+    dateDiv.innerHTML = `${day}, ${month} ${date}, ${year}`;
+
+// set audio for alarm
+const audio = new Audio('./extreme_clock_alarm.mp3');
+audio.loop = true;
+
+
+let alarmTime = null;
+let alarmTimeout = null;
+
+
+const myList = document.querySelector('#myList');
+const addAlarm = document.querySelector('.setAlarm')
+
+
+const alarmList = [];  // Stores all the alarms being set 
+
+// Plays the alarm audio at correct time
+function ringing(now){
+    audio.play();
+    alert(`Times Up! ${now}`)
+}
+
+
+// updates time every second 
+function updateTime() {
+    var today = new Date();
+    const hour = formatTime(today.getHours());
+    const minutes = formatTime(today.getMinutes());
+    const seconds = formatTime(today.getSeconds());
+    const now = `${hour}:${minutes}:${seconds}`;
+
+    display.innerText=`${hour}:${minutes}:${seconds}`;
+    
+// check if the alarmList includes the current time , "now"
+// if yes, ringing() is called
+    if(alarmList.includes(now) ){
+        ringing(now);
+    } 
+}
+
+
+// set the correct format of time
+// converts "1:2:3" to "01:02:03"
+function formatTime(time) {
+    if ( time < 10 && time.length != 2) {
+        return '0' + time;
+    }
+    return time;
+}
+
+
+// function to clear/stop the currently playing alarm
+function clearAlarm() {
+    audio.pause();
+    if (alarmTimeout) {
+        clearTimeout(alarmTimeout);
+        alert('Alarm cleared');
+    }
+}      
+
+
+// Deletes set alarm from list when "Delete" is pressed
+myList.addEventListener('click', e=> {
+    console.log("removing element")
+    if(e.target.classList.contains("removeSetAlarm")){
+        e.target.parentElement.remove();
+    }    
+})
+
+
+// Deletes alarm from the array when "Delete" is pressed
+remove = (value) => {
+    let newList = alarmList.filter((time) => time != value);
+    alarmList.length = 0;                  
+    alarmList.push.apply(alarmList, newList);
+    
+    console.log("newList", newList);
+    console.log("alarmList", alarmList);
+}
+
+
+// Adds newAlarm to the unordered list as a new list item on webpage
+function showNewAlarm(newAlarm){
+    const html =`
+    <li class = "time-list">        
+        <span class="time">${newAlarm}</span>
+        <button class="removeSetAlarm time-control" id="delete-button" onclick = "remove(this.value)" value=${newAlarm}>Delete</button>       
+    </li>`
+    myList.innerHTML += html
+};
+
+
+// event to set a new alarm whenever the form is submitted 
+addAlarm.addEventListener('submit', e=> {
+    e.preventDefault();
+    let new_h=formatTime(addAlarm.a_hour.value);
+    if(new_h === '0'){
+        new_h = '00'
+    }
+    let new_m=formatTime(addAlarm.a_min.value);
+    if(new_m === '0'){
+        new_m = '00'
+    }
+    let new_s=formatTime(addAlarm.a_sec.value);
+    if(new_s === '0'){
+        new_s = '00'
+    }
+    
+    const newAlarm = `${new_h}:${new_m}:${new_s}`
+
+//     add newAlarm to alarmList
+    if(isNaN(newAlarm)){
+        if(!alarmList.includes(newAlarm)){
+            alarmList.push(newAlarm);
+            console.log(alarmList);
+            console.log(alarmList.length);
+            showNewAlarm(newAlarm);
+            addAlarm.reset();
+        } else{
+            alert(`Alarm for ${newAlarm} already set.`);
+        }
+    } else{
+        alert("Invalid Time Entered")
+    }        
+})
+
+
+// calls updateTime() every second
+setInterval(updateTime, 1000);
+
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="Yash Tiwari" content="Responsive Alarm Clock, Html5.0, CSS, Javascript, Web technology">
+    <title>Responsive Alarm Clock</title>
+    <link rel="stylesheet" href="indexAlarm.css">
+</head>
+<body>
+ 
+<!-- Navigation Module  -->
+
+<nav class="navbar">
+    <div class="left">
+        <h1>Alarm Clock</h1>
+    </div>
+    <div class="right">
+        <input type="checkbox" id="check">
+        <label for="check" class="checkBtn">
+            <i class="fa fa-bars"></i>
+        </label>
+        <ul class="list">
+            <li><a href="indexAlarm.html">Home</a></li>
+            <li><a href="About-Project.html">About-Project</a></li>
+            <li><a href="#">Github-Link</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- About Project Content -->
+<div class="alarmClockContainer">
+
+ <div class="into">    
+ <p class="intro">
+
+  <b> Alarm-Clock Webpage using Simple JavaScript, Html5.0, Css </b><br>
+      Responsive Alarm Clock Project based on web developement technology such as Vanilla JavaScript, HTML, CSS.
+      The Structure of Webpage is pretty 'Simple' and is divided into 2 modules -- <br>
+      1. Navigation Module. <br>
+      2. Alarm Clock Module.
+      <br><br>    
+   <b>Approach of the Project</b><br> 
+      The project uses Vanilla JavaScript as all the alarms being set will be added to an array. The array will be checked every second if it contains the current time.If it does, then the alarm sound will be played. On clicking on "Snooze" the audio will be paused and clicking on "Delete" will remove the alarm from the array and the list.
+      <br><br>
+    <b>Components of Alarm Clock--</b><br><br>
+    <ul> 
+    <b>1. 24hrs Format Digital Clock</b><br>
+         Digital Clock in 24hrs format Clock showing continuous updated time(24hrs format), current day and date in Monday, January 09, 2023 format.
+         <br>
+    <b>2. Add New Alarm</b><br> 
+         Form for inserting alarm time in "hr,min,sec" with placeholder "HH,MM,SS".
+         Insert time in 24hrs format and click “Add Alarm” button, add that alarm to the alarms list below
+         When the alarm goes of just use JS alert function to alert in the browser
+        <br>
+    <b>3. Alarms list</b><br> 
+         Display a list of all the alarms set by user with Delete Button 
+        <br>
+    <b>4. Remove alarm</b><br> 
+         For each alarm give a delete button to delete the alarm.
+         
+        <br><br>
+    <b>Demo Image of Project</b><br>    
+    </ul>
+
+ </p>
+ 
+ <!--Image Container  -->
+ <div class="imageContainer">
+    <img src="projectSS.png" alt="Alarm Clock Project Image" id="projectImg">
+ </div>
+
+ 
+</div>
+
+
+</body>
+</html>
